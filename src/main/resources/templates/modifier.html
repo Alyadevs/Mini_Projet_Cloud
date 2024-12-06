@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Client</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eaf6f6; /* Light teal background */
+            color: #2b3a42; /* Dark gray text */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff; /* White background */
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #009688; /* Teal header */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4d626c; /* Muted dark teal */
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #b3d4d4; /* Light teal border */
+            border-radius: 8px;
+            outline: none;
+            background-color: #f8fdfd; /* Subtle teal background */
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #009688; /* Teal border on focus */
+            background-color: #e2f4f4; /* Slightly darker teal background */
+        }
+
+        button[type="submit"] {
+            background-color: #009688; /* Teal background */
+            color: #ffffff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #00796b; /* Darker teal on hover */
+        }
+
+        select {
+            appearance: none; /* Remove default arrow for consistency */
+        }
+
+        .select-container {
+            position: relative;
+        }
+
+        .select-container::after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #4d626c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Modifier Client</h1>
+
+    <form th:action="@{/clients/update/{id}(id=${client.id})}" method="post">
+        <div>
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom" th:value="${client.nom}" required>
+        </div>
+        <div>
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom" th:value="${client.prenom}" required>
+        </div>
+        <div>
+            <label for="age">Âge:</label>
+            <input type="number" id="age" name="age" th:value="${client.age}" required>
+        </div>
+        <div class="select-container">
+            <label for="region">Région:</label>
+            <select id="region" name="region.id" required>
+                <option value="" th:text="'Sélectionnez une région'">Sélectionnez une région</option>
+                <option th:each="region : ${regions}"
+                        th:value="${region.id}"
+                        th:text="${region.libelle}"
+                        th:selected="${client.region.id == region.id}"></option>
+            </select>
+        </div>
+        <button type="submit">Mettre à jour</button>
+    </form>
+</div>
+
+</body>
+</html>

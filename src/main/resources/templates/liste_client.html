@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Clients</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fc; /* Light gray background */
+            color: #444;
+        }
+
+        h1 {
+            text-align: center;
+            color: #34495e; /* Darker blue-gray for header */
+            margin: 20px 0;
+        }
+
+        /* Search Container */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            width: 300px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            background-color: #1abc9c; /* Green background */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #16a085; /* Darker green on hover */
+        }
+
+        /* Table Styles */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        table th {
+            background-color: #34495e; /* Blue-gray for header */
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #ecf0f1; /* Light hover effect */
+        }
+
+        /* Action Buttons */
+        a {
+            color: #1abc9c; /* Green for links */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #3498db; /* Blue background */
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .delete-btn {
+            background-color: #e74c3c; /* Red background */
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b; /* Darker red on hover */
+        }
+
+        /* Add New Client Link */
+        .add-client {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #1abc9c; /* Green background */
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .add-client:hover {
+            background-color: #16a085; /* Darker green on hover */
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Liste des Clients</h1>
+
+<!-- Search Form -->
+<div class="search-container">
+    <form action="#" th:action="@{/clients}" method="get">
+        <input type="text" name="searchQuery" placeholder="Rechercher par nom" th:value="${searchQuery}"/>
+
+        <button type="submit">Rechercher</button>
+    </form>
+</div>
+
+<!-- Client Table -->
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Âge</th>
+        <th>Région</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.nom}"></td>
+        <td th:text="${client.prenom}"></td>
+        <td th:text="${client.age}"></td>
+        <td th:text="${client.region.libelle}"></td>
+        <td>
+            <!-- Edit Button -->
+            <a th:href="@{/clients/update/{id}(id=${client.id})}" class="edit-btn">Modifier</a>
+            <!-- Delete Form -->
+            <form th:action="@{/clients/delete/{id}(id=${client.id})}" method="post" style="display:inline;">
+                <button type="submit" class="delete-btn">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Add New Client Link -->
+<a th:href="@{/clients/create}" class="add-client">Ajouter un nouveau client</a>
+
+</body>
+</html>
